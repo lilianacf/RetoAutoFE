@@ -1,0 +1,36 @@
+group 'co.com.auto'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:2.0.70"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+dependencies {
+    implementation      group: 'net.serenity-bdd',  name: 'serenity-core',      version: '2.1.5'
+    implementation      group: 'net.serenity-bdd',  name: 'serenity-cucumber5', version: '2.2.5'
+    implementation      group: 'org.assertj',       name: 'assertj-core',       version: '3.20.2'
+    testImplementation  group: 'org.slf4j',         name: 'slf4j-simple',       version: '1.7.32'
+}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)
